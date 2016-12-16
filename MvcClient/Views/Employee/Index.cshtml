@@ -1,0 +1,90 @@
+﻿@model List<MvcClient.Models.Employee>
+@if (!string.IsNullOrEmpty(ViewData["Error"]?.ToString()))
+{
+    <div class="alert alert-danger">@ViewData["Error"]</div>
+
+}
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<br />
+@using (Html.BeginForm())
+{
+    var list = Model.ToList();
+    @Html.AntiForgeryToken()
+    <table class="table table-responsive table-bordered" style="width:auto;">
+        <tr>
+            <td>
+                <h2 class="text-danger">Employees - Overview</h2>
+                <br />
+                <table class="table table-striped table-bordered" style="width:auto;">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => Model[0].Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model[0].Gender)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model[0].DateOfBirth)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{ for (int i = 0; i < list.Count(); i++)
+                {
+                                <tr>
+                                    <td>
+                                        @{if (list[i].Id == 0)
+                                            {
+                                                @Html.EditorFor(m => m[i].Id, new { htmlAttributes = new { style = "width: 150px;" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(list[i].Id)
+                                                @Html.HiddenFor(m => m[i].Id, new { htmlAttributes = new { style = "width: 150px;"} })
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m[i].Name, new { htmlAttributes = new { style = "width: 150px;" } })
+                                        @Html.ValidationMessageFor(m => m[i].Name, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m[i].Gender, new { htmlAttributes = new { style = "width: 80px;" } })
+                                        @Html.ValidationMessageFor(m => m[i].Gender, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m[i].DateOfBirth, new { htmlAttributes = new { style = "width: 80px;" } })
+                                        @Html.ValidationMessageFor(m => m[i].DateOfBirth, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <a href="@Url.Action("Delete", new { id = list[i].Id })">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <input type="button" onclick="window.location='../../Employee/Create'" value="Add employee" onmouseover="this.style.backgroundColor = 'gray'; this.style.color = 'white';" onmouseout="this.style.backgroundColor = 'white'; this.style.color = 'black';" class="oldButton" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Update" onmouseover="this.style.backgroundColor = 'gray'; this.style.color = 'white';" onmouseout="this.style.backgroundColor = 'white'; this.style.color = 'black';" class="oldButton" />
+                            }
