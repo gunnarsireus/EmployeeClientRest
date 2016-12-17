@@ -1,14 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using MvcClient.Models;
 
@@ -16,7 +11,7 @@ namespace MvcClient.Controllers
 {
     public class EmployeeController : Controller
     {
-        static string serverAddress = System.Configuration.ConfigurationManager.AppSettings["IISserverAddress"];
+        static string serverAddress = System.Configuration.ConfigurationManager.AppSettings["VSserverAddress"];
         private static T GetData<T>(string order)
         {
             WebClient proxy = new WebClient();
@@ -47,6 +42,7 @@ namespace MvcClient.Controllers
         // GET: Employee
         public ActionResult Index()
         {
+            ViewBag.Connection = serverAddress;
             List<Employee> employees = GetData<List<Employee>>("List");
             return View(employees.OrderBy(o => o.Id).ToList());
         }
@@ -55,6 +51,7 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(IList<Employee> employees)
         {
+            ViewBag.Connection = serverAddress;
             if (employees == null)
             {
                 return RedirectToAction("Index");
@@ -67,7 +64,7 @@ namespace MvcClient.Controllers
                 {
                     if (employee.Id == 0)
                     {
-                        continue;  //If employee with Id=0 has been entered in the view, ignore he/she, he/she will not be stored in db and will disapear in next page load;
+                        continue;  //If employee with Id=0 has been entered in the view, ignore he/she, will not be stored in db and will disapear in next page load
                     }
 
                     Employee emp = GetData<Employee>("Get/" + employee.Id.ToString()); //Check if employee already exists in Db

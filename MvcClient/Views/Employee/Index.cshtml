@@ -15,6 +15,7 @@
     var list = Model.ToList();
     @Html.AntiForgeryToken()
     <table class="table table-responsive table-bordered" style="width:auto;">
+        <h4 class="text-danger">connection: @ViewBag.Connection</h4>
         <tr>
             <td>
                 <h2 class="text-danger">Employees - Overview</h2>
