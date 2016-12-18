@@ -11,7 +11,7 @@ namespace MvcClient.Controllers
 {
     public class EmployeeController : Controller
     {
-        static string serverAddress = System.Configuration.ConfigurationManager.AppSettings["VSserverAddress"];
+        static string serverAddress = System.Configuration.ConfigurationManager.AppSettings["IISserverAddress"];
         private static T GetData<T>(string order)
         {
             WebClient proxy = new WebClient();
